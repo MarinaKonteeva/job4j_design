@@ -10,10 +10,10 @@ public class MatrixIt implements Iterator<Integer> {
 
     public MatrixIt(int[][] data) {
         this.data = data;
-        move();
     }
 
-    private void move() {
+    @Override
+    public boolean hasNext() {
         if (column > data[row].length - 1) {
             row++;
             column = 0;
@@ -21,10 +21,6 @@ public class MatrixIt implements Iterator<Integer> {
                 row++;
             }
         }
-    }
-
-    @Override
-    public boolean hasNext() {
         return row < data.length || row == data.length - 1 && column < data[row].length;
     }
 
@@ -34,7 +30,6 @@ public class MatrixIt implements Iterator<Integer> {
             throw new NoSuchElementException();
         }
         int i = data[row][column++];
-        move();
         return i;
     }
 }
