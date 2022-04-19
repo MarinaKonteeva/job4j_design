@@ -67,7 +67,7 @@ public class SimpleArrayListTest {
 
     @Test
     public void whenSetThenGetOldValueAndSizeNotChanged() {
-        Assert.assertEquals(Integer.valueOf(22), list.set(1, 22));
+        Assert.assertEquals(Integer.valueOf(2), list.set(1, 22));
         Assert.assertEquals(3, list.size());
     }
 

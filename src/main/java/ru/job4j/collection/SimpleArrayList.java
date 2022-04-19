@@ -12,14 +12,12 @@ public class SimpleArrayList<T> implements List<T> {
 
     public SimpleArrayList(int capacity) {
         this.container = (T[]) new Object[capacity];
-        size = 0;
-        modCount = 0;
     }
 
     @Override
     public void add(T value) {
         if (size >= container.length) {
-            container = Arrays.copyOf(container, container.length * 2);
+            inc2();
         }
         container[size++] = value;
         modCount++;
@@ -27,18 +25,15 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T newValue) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        T rsl = container[index];
+        checkIndex(index);
         container[index] = newValue;
-        return container[index];
+        return rsl;
     }
 
     @Override
     public T remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         T rsl = container[index];
         System.arraycopy(container, index + 1, container, index, size - index - 1);
         container[size - 1] = null;
@@ -49,9 +44,7 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         return container[index];
     }
 
@@ -67,6 +60,9 @@ public class SimpleArrayList<T> implements List<T> {
             int expectedModCount = modCount;
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return i < size;
             }
 
@@ -75,13 +71,21 @@ public class SimpleArrayList<T> implements List<T> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
                 return container[i++];
             }
-
         };
+    }
+
+    private void inc2() {
+        container = Arrays.copyOf(container, container.length * 2);
+        if (container.length == 0) {
+            container = (T[]) new Object[10];
+        }
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 }
