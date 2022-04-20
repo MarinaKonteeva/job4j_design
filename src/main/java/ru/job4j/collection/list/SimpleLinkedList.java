@@ -41,24 +41,25 @@ public class SimpleLinkedList<E> implements List<E> {
     @Override
     public E get(int index) {
         Objects.checkIndex(index, size);
-        Node<E> p = first;
+        Node<E> point = first;
         for (int i = 0; i < index; i++) {
-            p = p.next;
+            point = point.next;
         }
-        return p.item;
+        return point.item;
     }
 
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             int expectedModCount = modCount;
-            Node<E> p = first;
+            Node<E> point = first;
             @Override
             public boolean hasNext() {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return p != null;
+                return point != null;
+
             }
 
             @Override
@@ -66,8 +67,8 @@ public class SimpleLinkedList<E> implements List<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                var rsl = p.item;
-                p = p.next;
+                var rsl = point.item;
+                point = point.next;
                 return rsl;
             }
         };
