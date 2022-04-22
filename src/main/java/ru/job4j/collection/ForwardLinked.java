@@ -26,7 +26,9 @@ public class ForwardLinked<T> implements Iterable<T> {
         var rsl = head;
         head = head.next;
         rsl.next = null;
-        return rsl.value;
+        var rsl2 = rsl.value;
+        rsl.value = null;
+        return rsl2;
     }
 
     @Override
