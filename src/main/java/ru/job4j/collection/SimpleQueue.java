@@ -10,14 +10,14 @@ public class SimpleQueue<T> {
 
     public T poll() {
         if (sizeOut == 0) {
+            if (sizeIn == 0) {
+                throw new NoSuchElementException();
+            }
             while (sizeIn > 0) {
                 out.push(in.pop());
                 sizeIn--;
                 sizeOut++;
             }
-        }
-        if (sizeOut == 0) {
-            throw new NoSuchElementException();
         }
         sizeOut--;
         return out.pop();
