@@ -17,12 +17,21 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, children, birthday);
+        return super.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        User user = (User) obj;
+        return Objects.equals(name, user.name)
+                && Objects.equals(children, user.children)
+                && Objects.equals(birthday, user.birthday);
     }
 
     public static void main(String[] args) {
