@@ -1,4 +1,4 @@
-package ru.job4j.map;
+package ru.job4j.map1;
 
 import javax.xml.crypto.Data;
 import java.sql.Date;
