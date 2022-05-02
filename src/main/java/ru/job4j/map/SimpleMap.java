@@ -18,14 +18,18 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
+        boolean rsl = false;
         if (count > capacity * LOAD_FACTOR) {
             expand();
         }
         int i = hash(key.hashCode());
-        table[i] = new MapEntry<>(key, value);
-        count++;
-        modCount++;
-        return true;
+        if (table[i] == null) {
+            table[i] = new MapEntry<>(key, value);
+            count++;
+            modCount++;
+            rsl = true;
+        }
+        return rsl;
     }
 
     private int hash(int hashCode) {
@@ -37,8 +41,8 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private void expand() {
-        MapEntry<K, V>[] table1 = new MapEntry[capacity * 2];
         capacity = capacity * 2;
+        MapEntry<K, V>[] table1 = new MapEntry[capacity];
         for (int i = 0; i < table.length; i++) {
             if (table[i] != null) {
                 int j = hash(table[i].key.hashCode());
@@ -52,7 +56,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         V rsl = null;
         int i = hash(key.hashCode());
-        if (table[i] != null) {
+        if (table[i] != null && table[i].key == key) {
             rsl = table[i].value;
         }
         return rsl;
@@ -62,7 +66,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public boolean remove(K key) {
         boolean rsl = false;
         int i = hash(key.hashCode());
-        if (table[i] != null) {
+        if (table[i] != null && table[i].key == key) {
             table[i] = null;
             rsl = true;
             count--;
@@ -78,11 +82,11 @@ public class SimpleMap<K, V> implements Map<K, V> {
             int expectedModCount = modCount;
             @Override
             public boolean hasNext() {
-                while (table[i] != null && i < count) {
-                    i++;
-                }
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
+                }
+                while (table[i] != null && i < count) {
+                    i++;
                 }
                 return i < count;
             }
