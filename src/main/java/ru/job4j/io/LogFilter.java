@@ -6,8 +6,9 @@ import java.util.stream.Collectors;
 
 public class LogFilter {
     public static List<String> filter(String file) {
+        List<String> rsl = null;
         try (BufferedReader in = new BufferedReader(new FileReader(file))) {
-            return in.lines()
+            rsl = in.lines()
                     .filter(s -> {
                         var ss = s.split(" ");
                         return ss[ss.length - 2].equals("404");
@@ -16,7 +17,7 @@ public class LogFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return rsl;
     }
 
     public static void save(List<String> log, String file) {
