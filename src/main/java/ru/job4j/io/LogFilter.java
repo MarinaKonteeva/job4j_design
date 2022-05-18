@@ -10,16 +10,13 @@ public class LogFilter {
             return in.lines()
                     .filter(s -> {
                         var ss = s.split(" ");
-                        if (ss[ss.length - 2].equals("404")) {
-                            return true;
-                        }
-                        return false;
+                        return ss[ss.length - 2].equals("404");
                     }).collect(Collectors.toList());
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     public static void save(List<String> log, String file) {
