@@ -40,6 +40,19 @@ public class ConfigTest {
         String path = "./data/pair_with_exception.properties";
         Config config = new Config(path);
         config.load();
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void whenPairWithoutKeyException() {
+        String path = "./data/pair_withoutKey_exception.properties";
+        Config config = new Config(path);
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenPairWithoutSException() {
+        String path = "./data/pair_withoutS_exception.properties";
+        Config config = new Config(path);
+        config.load();
     }
 }
