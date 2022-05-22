@@ -15,7 +15,7 @@ public class AnalizyTest {
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void drop() throws IOException {
+    public void unavailableTest() throws IOException {
         File source = folder.newFile("source.txt");
         File target = folder.newFile("target.txt");
         try (PrintWriter out = new PrintWriter(source)) {
