@@ -4,11 +4,12 @@ import java.io.*;
 
 public class Analizy {
     public void unavailable(String source, String target) {
-        try (BufferedReader in = new BufferedReader(new FileReader(source))) {
-            PrintWriter out = new PrintWriter(
-                    new BufferedOutputStream(
-                            new FileOutputStream(target)
-                    ));
+        try (BufferedReader in = new BufferedReader(new FileReader(source));
+             PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(target)
+                ))) {
+
             boolean work = true;
             String time = "";
             String s;
@@ -25,7 +26,7 @@ public class Analizy {
                     out.println(time);
                 }
             }
-            out.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
