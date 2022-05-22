@@ -13,9 +13,8 @@ public class Dir {
         }
         for (File subfile : file.listFiles()) {
             if (!subfile.isDirectory()) {
-                System.out.println(subfile.getName() + "  size : " + subfile.length());
+                System.out.println(String.format("file= %s, size= %s", subfile.getName(), subfile.length()));
             }
-
         }
     }
 }
