@@ -20,21 +20,16 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
         File file1 = new File(file.toString());
         FileProperty fileProperty = new FileProperty(file1.length(), file1.getName());
-        if (files.containsKey(fileProperty)) {
-            files.get(fileProperty).add(file.toAbsolutePath());
-        } else {
-            files.put(fileProperty, new ArrayList<>());
-            files.get(fileProperty).add(file.toAbsolutePath());
-        }
-
+        files.putIfAbsent(fileProperty, new ArrayList<>());
+        files.get(fileProperty).add(file.toAbsolutePath());
         return super.visitFile(file, attrs);
     }
 
     public void printDublicate() {
-        for (var f : files.keySet()) {
-            if (files.get(f).size() > 1) {
-                for (var f1 : files.get(f)) {
-                    System.out.println(f1);
+        for (var paths : files.values()) {
+            if (paths.size() > 1) {
+                for (var path : paths) {
+                    System.out.println(path);
                 }
             }
         }
