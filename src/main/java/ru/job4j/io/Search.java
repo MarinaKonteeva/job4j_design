@@ -9,8 +9,20 @@ import java.util.function.Predicate;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get(".\\data");
-        search(start, p -> p.toFile().getName().endsWith(".log")).forEach(System.out::println);
+        val(args);
+        Path start = Paths.get(args[0]);
+        search(start, p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
+    }
+
+    public static void val(String[] args) {
+        if (args.length != 2) {
+            throw new IllegalArgumentException("неправильные аргументы");
+        }
+        try {
+            Path start = Paths.get(args[0]);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("первый аргумент должен быть путь до папки поиска");
+        }
     }
 
     public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
