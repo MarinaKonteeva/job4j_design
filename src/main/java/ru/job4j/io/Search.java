@@ -1,5 +1,6 @@
 package ru.job4j.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,10 +19,12 @@ public class Search {
         if (args.length != 2) {
             throw new IllegalArgumentException("неправильные аргументы");
         }
-        try {
-            Path start = Paths.get(args[0]);
-        } catch (Exception ex) {
+        File file = new File(args[0]);
+        if (!file.isDirectory()) {
             throw new IllegalArgumentException("первый аргумент должен быть путь до папки поиска");
+        }
+        if (!args[1].startsWith(".")) {
+            throw new IllegalArgumentException("второй аргумент должен быть расширение файла");
         }
     }
 
