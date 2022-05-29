@@ -14,22 +14,26 @@ public class ArgsName {
         return values.get(key);
     }
 
+    private boolean valid(String arg) {
+        if (arg.isEmpty() || !arg.startsWith("-")
+                || arg.startsWith("-=") || arg.contains("=")) {
+            throw new IllegalArgumentException("невалидный аргумент");
+        }
+        String val = arg.substring(arg.indexOf("=") + 1);
+        if (val.isEmpty()) {
+            throw new IllegalArgumentException("нет значения");
+        }
+        return true;
+    }
+
     private void parse(String[] args) {
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].startsWith("-")
-                    && !args[i].startsWith("-=")
-                    && args[i].contains("=")) {
-                String key = args[i].split("=")[0].substring(1);
-                String val = args[i].substring(args[i].indexOf("=") + 1);
-                if (val.isEmpty()) {
-                    throw new IllegalArgumentException("нет значения");
-                }
+        for (var arg : args) {
+            if (valid(arg)) {
+                String key = arg.split("=")[0].substring(1);
+                String val = arg.substring(arg.indexOf("=") + 1);
                 values.put(key, val);
-            } else {
-                throw new IllegalArgumentException("невалидный аргумент");
             }
         }
-
     }
 
     public static ArgsName of(String[] args) {
