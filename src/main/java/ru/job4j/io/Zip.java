@@ -1,8 +1,5 @@
 package ru.job4j.io;
 
-import ru.job4j.io.duplicates.DuplicatesVisitor;
-import ru.job4j.io.duplicates.FileProperty;
-
 import java.io.*;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -10,12 +7,25 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zip {
+
+    public static void val(String directory, String exclude, String output) {
+
+        File file = new File(directory);
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException("первый аргумент должен быть путь до папки");
+        }
+        if (!exclude.startsWith(".")) {
+            throw new IllegalArgumentException("второй аргумент должен быть расширение файла");
+        }
+        if (output.length() == 0) {
+            throw new IllegalArgumentException("нет названия файла");
+        }
+    }
 
     public void packFiles(List<File> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
@@ -58,19 +68,9 @@ public class Zip {
         }
     }
 
-    public void packSingleFile(File source, File target) {
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            zip.putNextEntry(new ZipEntry(source.getPath()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
-                zip.write(out.readAllBytes());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void main(String[] args) throws IOException {
         ArgsName argsName = ArgsName.of(args);
+        val(argsName.get("d"), argsName.get("e"), argsName.get("o"));
         Zip zip = new Zip();
         Path path = Path.of(argsName.get("d"));
         List<File> sources = zip.collect(path, argsName.get("e"));
