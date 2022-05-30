@@ -37,6 +37,9 @@ public class ArgsName {
     }
 
     public static ArgsName of(String[] args) {
+        if (args == null || args.length == 0) {
+            throw new IllegalArgumentException("пустой массив");
+        }
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;
