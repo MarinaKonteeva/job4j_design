@@ -16,7 +16,7 @@ public class ArgsName {
 
     private boolean valid(String arg) {
         if (arg.isEmpty() || !arg.startsWith("-")
-                || arg.startsWith("-=") || arg.contains("=")) {
+                || arg.startsWith("-=") || !arg.contains("=")) {
             throw new IllegalArgumentException("невалидный аргумент");
         }
         String val = arg.substring(arg.indexOf("=") + 1);
