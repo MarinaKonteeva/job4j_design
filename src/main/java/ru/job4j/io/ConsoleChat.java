@@ -1,6 +1,7 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,16 +27,16 @@ public class ConsoleChat {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
         String command = "";
-        while (!command.equals(OUT)) {
+        while (!OUT.equals(command)) {
 
             command = scanner.nextLine();
             log.add(command);
 
-            if (command.equals(OUT)) {
+            if (OUT.equals(command)) {
                 saveLog(log);
-            } else if (command.equals(STOP)) {
+            } else if (STOP.equals(command)) {
                 isStop = true;
-            } else if (command.equals(CONTINUE)) {
+            } else if (CONTINUE.equals(command)) {
                 isStop = false;
                 var answer = answers.get(random.nextInt(answers.size()));
                 log.add(answer);
@@ -51,16 +52,17 @@ public class ConsoleChat {
     }
 
     private List<String> readPhrases() {
-        try (BufferedReader in = new BufferedReader(new FileReader(botAnswers))) {
-            return in.lines().collect(Collectors.toList());
+        List<String> rsl = new ArrayList<>();
+        try (BufferedReader in = new BufferedReader(new FileReader(botAnswers, Charset.forName("UTF-8")))) {
+            rsl = in.lines().collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return rsl;
     }
 
     private void saveLog(List<String> log) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(path))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(path, Charset.forName("UTF-8")))) {
             for (var l : log) {
                 pw.println(l);
             }
