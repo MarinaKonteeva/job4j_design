@@ -16,10 +16,6 @@ public class CSVReader {
         if (!";".equals(delimiter)) {
             throw new IllegalArgumentException("второй аргумент должен быть расширение файла");
         }
-        file = new File(out);
-        if (!(file.isFile() || "stdout".equals(out))) {
-            throw new IllegalArgumentException("третий аргумент должен быть путь до папки поиска");
-        }
         if (filter.size() == 0) {
             throw new IllegalArgumentException("нет полей");
         }
@@ -33,7 +29,10 @@ public class CSVReader {
         val(path, delimiter, out, filter);
 
         try (var scanner = new Scanner(new FileReader(path));
-             PrintWriter pw = new PrintWriter(new FileWriter(out))) {
+             PrintWriter pw = "stdout".equals(out)
+                     ? new PrintWriter(System.out)
+                     : new PrintWriter(new FileWriter(out))) {
+
             var titles = scanner.nextLine().split(delimiter);
             List<String[]> data = new ArrayList<>();
             while (scanner.hasNext()) {
@@ -58,6 +57,16 @@ public class CSVReader {
                 pw.println(str);
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        var argsName = ArgsName.of(args);
+
+        try {
+            CSVReader.handle(argsName);
         } catch (Exception e) {
             e.printStackTrace();
         }
