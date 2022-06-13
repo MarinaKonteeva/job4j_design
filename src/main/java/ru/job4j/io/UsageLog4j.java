@@ -11,7 +11,7 @@ public class UsageLog4j {
         byte b = 1;
         short sh = 2;
         int i = 3;
-        long l = 40000000;
+        long l = 40000000L;
         float f = 1.5f;
         double d = 1.3;
         boolean bool = true;
