@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<student sex="true" age="39">
+    <contact phone="11-111"/>
+    <statuses>
+        <status>Worker</status>
+        <status>Married</status>
+    </statuses>
+</student>
