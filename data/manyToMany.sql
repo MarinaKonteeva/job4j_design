@@ -1,9 +1,9 @@
- create table actors(
+create table films(
      id serial primary key,
      name varchar(255)
  );
 
- create table films(
+ create table actors(
      id serial primary key,
      name varchar(255)
  );
