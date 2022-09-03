@@ -3,6 +3,11 @@
      name varchar(255)
  );
 
+ create table films(
+     id serial primary key,
+     name varchar(255)
+ );
+
  create table films_actors(
      id serial primary key,
      film_id int references films(id),
